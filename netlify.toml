@@ -1,4 +1,4 @@
-# Deploy su Netlify: collega repo GitHub e imposta "Base directory" = invite-site
+# Deploy: publish directory = root di questo repo (non serve build)
 
 [[headers]]
   for = "/.well-known/apple-app-site-association"
@@ -10,7 +10,12 @@
   [headers.values]
     Content-Type = "application/json"
 
-# /mario → serve invite.html mantenendo l'URL (Universal Links + fallback web)
+[[redirects]]
+  from = "/"
+  to = "/index.html"
+  status = 200
+
+# /mario → invite.html (i file in .well-known/ hanno priorità come statici)
 [[redirects]]
   from = "/:username"
   to = "/invite.html"
