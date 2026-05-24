@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profilo su Spottly</title>
+  <meta name="description" content="Scopri questo profilo su Spottly e scarica l'app.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Spottly">
+  <meta property="og:title" content="Profilo su Spottly">
+  <meta property="og:description" content="Unisciti a Spottly e scopri post e persone vicine a te.">
+  <meta property="og:url" content="">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Profilo su Spottly">
+  <meta name="twitter:description" content="Scarica Spottly e scopri questo profilo.">
+  <meta name="apple-itunes-app" content="app-id=6756431227">
+  <meta name="theme-color" content="#000000">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #000;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { width: 100%; max-width: 400px; text-align: center; }
+    .brand {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; margin-bottom: 40px; color: #fff;
+    }
+    .avatar {
+      width: 96px; height: 96px; border-radius: 50%; margin: 0 auto 20px;
+      background: #fff; color: #000; border: 2px solid #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 40px; font-weight: 700;
+    }
+    .username {
+      font-size: 32px; font-weight: 800; letter-spacing: -0.02em;
+      line-height: 1.1; word-break: break-word; color: #fff;
+    }
+    .subtitle { margin-top: 10px; font-size: 15px; color: #a3a3a3; }
+    .divider { width: 48px; height: 1px; background: #fff; margin: 32px auto; }
+    .hint { font-size: 15px; line-height: 1.6; color: #d4d4d4; margin-bottom: 28px; padding: 0 8px; }
+    .btn {
+      display: block; width: 100%; padding: 16px 20px; border-radius: 0;
+      font-size: 15px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+      text-align: center; text-decoration: none; border: 2px solid #fff; cursor: pointer;
+    }
+    .btn-primary { background: #fff; color: #000; margin-bottom: 12px; }
+    .btn-secondary { background: #000; color: #fff; }
+    .status {
+      margin-top: 24px; font-size: 12px; letter-spacing: 0.06em;
+      text-transform: uppercase; color: #737373; min-height: 16px;
+    }
+    .store-links { display: none; flex-direction: column; gap: 12px; margin-top: 8px; }
+    .store-links.visible { display: flex; }
+    .invalid h1 { font-size: 24px; font-weight: 800; margin-bottom: 12px; color: #fff; }
+    .invalid p { color: #a3a3a3; font-size: 15px; line-height: 1.6; margin-bottom: 28px; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="wrap" id="mainWrap"></div>
+  <script>
+    (function () {
+      var IOS_STORE = 'https://apps.apple.com/app/id6756431227';
+      var ANDROID_STORE = 'https://play.google.com/store/apps/details?id=com.spottlyapp.mobile';
+      var RESERVED = { 'invite.html': true, 'index.html': true, '.well-known': true, 'favicon.ico': true };
+
+      function getUsernameFromPath() {
+        var segment = window.location.pathname.replace(/^\/+|\/+$/g, '').split('/')[0] || '';
+        segment = decodeURIComponent(segment).trim().toLowerCase().replace(/^@+/, '');
+        if (!segment || RESERVED[segment] || segment.indexOf('.') !== -1) return null;
+        if (segment.length < 3 || segment.length > 20) return null;
+        if (!/^[a-z0-9._]+$/.test(segment)) return null;
+        return segment;
+      }
+
+      function detectPlatform() {
+        var ua = navigator.userAgent || '';
+        if (/iPhone|iPad|iPod/i.test(ua)) return 'ios';
+        if (/Android/i.test(ua)) return 'android';
+        return 'other';
+      }
+
+      function storeUrl(platform) {
+        if (platform === 'ios') return IOS_STORE;
+        if (platform === 'android') return ANDROID_STORE;
+        return IOS_STORE;
+      }
+
+      function setStatus(text) {
+        var el = document.getElementById('status');
+        if (el) el.textContent = text || '';
+      }
+
+      function redirectToStore(platform) {
+        window.location.replace(storeUrl(platform));
+      }
+
+      var username = getUsernameFromPath();
+      var platform = detectPlatform();
+      var storeLink = storeUrl(platform);
+      var inviteUrl = username ? ('https://invite.appspottly.com/' + encodeURIComponent(username)) : '';
+      var appSchemeUrl = username ? ('spottly://u/' + encodeURIComponent(username)) : '';
+      var isMobile = platform === 'ios' || platform === 'android';
+      var mainWrap = document.getElementById('mainWrap');
+
+      if (!username) {
+        mainWrap.innerHTML = '<div class="invalid"><h1>Link non valido</h1><p>Questo invito non sembra corretto.</p><a class="btn btn-primary" href="' + IOS_STORE + '">Scarica Spottly</a></div>';
+        return;
+      }
+
+      mainWrap.innerHTML =
+        '<p class="brand">Spottly</p>' +
+        '<div class="avatar">' + username.charAt(0).toUpperCase() + '</div>' +
+        '<div class="username">@' + username + '</div>' +
+        '<p class="subtitle">Profilo su Spottly</p>' +
+        '<div class="divider"></div>' +
+        '<p class="hint" id="hint">Apertura profilo in Spottly…</p>' +
+        '<button type="button" class="btn btn-primary" id="openAppBtn">Apri in Spottly</button>' +
+        '<a class="btn btn-secondary" id="storeBtn" href="' + storeLink + '">Scarica l\'app</a>' +
+        '<div class="store-links" id="storeLinks">' +
+          '<a class="btn btn-secondary" href="' + IOS_STORE + '">App Store</a>' +
+          '<a class="btn btn-secondary" href="' + ANDROID_STORE + '">Google Play</a>' +
+        '</div>' +
+        '<p class="status" id="status"></p>';
+
+      document.title = '@' + username + ' su Spottly';
+      var ogUrl = document.querySelector('meta[property="og:url"]');
+      var ogTitle = document.querySelector('meta[property="og:title"]');
+      if (ogUrl) ogUrl.setAttribute('content', inviteUrl);
+      if (ogTitle) ogTitle.setAttribute('content', '@' + username + ' su Spottly');
+
+      if (!isMobile) {
+        document.getElementById('hint').textContent = 'Scarica Spottly per vedere questo profilo.';
+        document.getElementById('storeLinks').classList.add('visible');
+        document.getElementById('openAppBtn').classList.add('hidden');
+      }
+
+      var appOpened = false;
+      var storeTimer = null;
+
+      document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'hidden') {
+          appOpened = true;
+          if (storeTimer) clearTimeout(storeTimer);
+        }
+      });
+      window.addEventListener('pagehide', function () {
+        appOpened = true;
+        if (storeTimer) clearTimeout(storeTimer);
+      });
+
+      function tryOpenApp(manual) {
+        if (!isMobile) {
+          if (manual) window.location.href = storeLink;
+          return;
+        }
+        setStatus(manual ? 'Apertura in corso…' : 'Verifica app…');
+        appOpened = false;
+        window.location.href = inviteUrl;
+        setTimeout(function () {
+          if (!appOpened) window.location.href = appSchemeUrl;
+        }, manual ? 100 : 350);
+        if (storeTimer) clearTimeout(storeTimer);
+        storeTimer = setTimeout(function () {
+          if (appOpened || document.visibilityState === 'hidden') return;
+          setStatus('Reindirizzamento allo store…');
+          redirectToStore(platform);
+        }, manual ? 1600 : 2000);
+      }
+
+      document.getElementById('openAppBtn').addEventListener('click', function () { tryOpenApp(true); });
+      if (isMobile) setTimeout(function () { tryOpenApp(false); }, 400);
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+# Deploy su Netlify: collega repo GitHub e imposta "Base directory" = invite-site
+
+[[headers]]
+  for = "/.well-known/apple-app-site-association"
+  [headers.values]
+    Content-Type = "application/json"
+
+[[headers]]
+  for = "/.well-known/assetlinks.json"
+  [headers.values]
+    Content-Type = "application/json"
+
+# /mario → serve invite.html mantenendo l'URL (Universal Links + fallback web)
+[[redirects]]
+  from = "/:username"
+  to = "/invite.html"
+  status = 200
