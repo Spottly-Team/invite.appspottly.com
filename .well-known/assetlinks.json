@@ -5,7 +5,8 @@
       "namespace": "android_app",
       "package_name": "com.spottlyapp.mobile",
       "sha256_cert_fingerprints": [
-        "SOSTITUISCI_CON_SHA256_PLAY_CONSOLE"
+        "A7:DE:73:12:4F:BD:8E:78:6F:71:19:B2:00:BA:D5:01:33:BA:B0:5B:48:7E:E4:6A:D2:86:09:42:F2:87:73:42",
+        "38:85:CF:F0:E8:BE:3B:7A:4B:26:AE:5C:77:36:A3:20:15:7C:69:E4:BF:30:42:39:6F:C9:5C:6C:6A:CA:E8:39"
       ]
     }
   }
