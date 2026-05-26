@@ -99,10 +99,6 @@
         if (el) el.textContent = text || '';
       }
 
-      function redirectToStore(platform) {
-        window.location.replace(storeUrl(platform));
-      }
-
       var username = getUsernameFromPath();
       var platform = detectPlatform();
       var storeLink = storeUrl(platform);
@@ -122,7 +118,7 @@
         '<div class="username">@' + username + '</div>' +
         '<p class="subtitle">Profilo su Spottly</p>' +
         '<div class="divider"></div>' +
-        '<p class="hint" id="hint">Apertura profilo in Spottly…</p>' +
+        '<p class="hint" id="hint">Apri il profilo nell\'app Spottly.</p>' +
         '<button type="button" class="btn btn-primary" id="openAppBtn">Apri in Spottly</button>' +
         '<a class="btn btn-secondary" id="storeBtn" href="' + storeLink + '">Scarica l\'app</a>' +
         '<div class="store-links" id="storeLinks">' +
@@ -143,41 +139,14 @@
         document.getElementById('openAppBtn').classList.add('hidden');
       }
 
-      var appOpened = false;
-      var storeTimer = null;
-
-      document.addEventListener('visibilitychange', function () {
-        if (document.visibilityState === 'hidden') {
-          appOpened = true;
-          if (storeTimer) clearTimeout(storeTimer);
-        }
-      });
-      window.addEventListener('pagehide', function () {
-        appOpened = true;
-        if (storeTimer) clearTimeout(storeTimer);
-      });
-
-      function tryOpenApp(manual) {
+      document.getElementById('openAppBtn').addEventListener('click', function () {
         if (!isMobile) {
-          if (manual) window.location.href = storeLink;
+          window.location.href = storeLink;
           return;
         }
-        setStatus(manual ? 'Apertura in corso…' : 'Verifica app…');
-        appOpened = false;
-        window.location.href = inviteUrl;
-        setTimeout(function () {
-          if (!appOpened) window.location.href = appSchemeUrl;
-        }, manual ? 100 : 350);
-        if (storeTimer) clearTimeout(storeTimer);
-        storeTimer = setTimeout(function () {
-          if (appOpened || document.visibilityState === 'hidden') return;
-          setStatus('Reindirizzamento allo store…');
-          redirectToStore(platform);
-        }, manual ? 1600 : 2000);
-      }
-
-      document.getElementById('openAppBtn').addEventListener('click', function () { tryOpenApp(true); });
-      if (isMobile) setTimeout(function () { tryOpenApp(false); }, 400);
+        setStatus('Apertura in corso…');
+        window.location.href = appSchemeUrl;
+      });
     })();
   </script>
 </body>
